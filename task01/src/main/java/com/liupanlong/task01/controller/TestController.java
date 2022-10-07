@@ -1,6 +1,7 @@
 package com.liupanlong.task01.controller;
 
 import com.liupanlong.task01.service.ProcessBeforeService;
+import com.liupanlong.task01.service.client.Task02Client;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,9 @@ public class TestController {
 
     @Autowired
     private ProcessBeforeService processBeforeService;
+
+    @Autowired
+    private Task02Client task02Client;
 
     @RequestMapping("insert")
     public String insertBigData() {
@@ -37,5 +41,10 @@ public class TestController {
             resultStr = "向kafka发送数据失败！";
         }
         return resultStr;
+    }
+
+    @RequestMapping("test")
+    public String getName() {
+        return task02Client.getOrgNameByDomianId(12321L);
     }
 }

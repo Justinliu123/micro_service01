@@ -16,4 +16,8 @@ public class ProcessDataController {
     public String getOrgNameByDomianId(@PathVariable("domianId") Long domianId) {
         return processDataService.getOrgNameByDomianId(domianId);
     }
+    @RequestMapping("/test")
+    public String getString() {
+        return "调用成功！";
+    }
 }

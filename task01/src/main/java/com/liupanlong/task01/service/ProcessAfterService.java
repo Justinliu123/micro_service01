@@ -29,16 +29,19 @@ public class ProcessAfterService {
 
     @KafkaListener(topics = "topic_test")
     public void topicListener(ConsumerRecord<String, String> record, Acknowledgment item) {
-      /*  String value = record.value();
-        ProcessBefore processBefore = JSONObject.parseObject(value, ProcessBefore.class);
-
-        String orgNames = task02Client.getOrgNameByDomianId(processBefore.getDomianId());
-        log.info("兑换名称成功" + orgNames);
-        ProcessAfter processAfter = changeBeforeToAfter(processBefore);
-        processAfter.setOrgNames(orgNames);
-        processAfterRepository.save(processAfter);
-        log.info("保存成功");*/
-        log.info("收到" + record.value());
+        String value = record.value();
+        ProcessBefore processBefore;
+        try {
+            processBefore = JSONObject.parseObject(value, ProcessBefore.class);
+            String orgNames = task02Client.getOrgNameByDomianId(processBefore.getDomianId());
+            log.info("兑换名称成功" + orgNames);
+            ProcessAfter processAfter = changeBeforeToAfter(processBefore);
+            processAfter.setOrgNames(orgNames);
+            processAfterRepository.save(processAfter);
+            log.info("保存成功");
+        } catch (Exception e) {
+            log.info("json转换异常" + value);
+        }
         //手动提交
         item.acknowledge();
     }

@@ -7,5 +7,5 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @FeignClient("task02")
 public interface Task02Client {
     @RequestMapping("/changeData/{domianId}")
-    String getOrgNameByDomianId(@PathVariable("domainId") Long domianId);
+    String getOrgNameByDomianId(@PathVariable("domianId") Long domianId);
 }
