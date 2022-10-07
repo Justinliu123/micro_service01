@@ -1,0 +1,46 @@
+server:
+  port: 8101
+spring:
+  datasource:
+    url: jdbc:postgresql://yun.liupanlong.com:5432/test
+    username: postgres
+    password: 123456
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        hbm2ddl:
+          auto: validate
+  kafka:
+    producer:
+      bootstrap-servers: yun.liupanlong.com:9092
+      # 重试次数，设置大于0的值，则客户端会将发送失败的记录重新发送
+      retries: 1
+      batch-size: 16384 #批量处理大小，16K
+      buffer-memory: 33554432 #缓冲存储大，32M
+      acks: 1
+      # 指定消息key和消息体的编解码方式
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      bootstrap-servers: yun.liupanlong.com:9092
+      # 消费者组
+      group-id: test-consumer-group
+      # 是否自动提交
+      enable-auto-commit: false
+      # 消费偏移配置
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    # 监听
+    listener:
+      ack-mode: manual_immediate
+  application:
+    name: task01
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8888/eureka
